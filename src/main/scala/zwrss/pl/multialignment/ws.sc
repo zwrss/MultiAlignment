@@ -1,2 +1,2 @@
-Seq(7,8,9).splitAt(1)
+Seq(5, 2, 3, 7, 1, 0).sortBy(-_.toInt)
 

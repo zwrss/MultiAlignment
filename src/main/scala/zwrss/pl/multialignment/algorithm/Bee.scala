@@ -24,4 +24,6 @@ case class Bee(solution: Alignment, originalSequences: Seq[Sequence], hardWorkin
    * Score for sorting.
    */
   def score: Int = solution.score
+
+  def string: String = "Bee(score = " + score + ", solutionLength = " + solution.length + ")"
 }

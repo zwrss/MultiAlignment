@@ -47,14 +47,15 @@ case class Sequence(aminoacids: Seq[Aminoacid]) {
    * @return Complemented sequence.
    */
   def complementRandomly(size: Int): Sequence = {
-    val empties = (1 to (size - aminoacids.size)).foldLeft(Seq.empty[Aminoacid]) {
-      case (seq, i) => {
-        val pivot = Random.nextInt(aminoacids.size)
+    def internalComplement(size: Int, seq: Seq[Aminoacid]): Seq[Aminoacid] =
+      if(seq.size >= size) seq
+      else {
+        val pivot = Random.nextInt(seq.size)
         val (head, tail) = seq.splitAt(pivot)
-        (head :+ Empty) ++ tail
+        val compSeq = (head :+ Empty) ++ tail
+        internalComplement(size, compSeq)
       }
-    }
-    Sequence(this.aminoacids ++ empties)
+    Sequence(internalComplement(size, aminoacids))
   }
 
   /**
@@ -71,5 +72,17 @@ case class Sequence(aminoacids: Seq[Aminoacid]) {
     val (head, tail) = aminoacids.splitAt(idx)
     Sequence(head ++ tail.tail)
   }
+
+  /**
+   * Returns sequence with removed empty on the provided indexes.
+   * Throws if its not empty on that place.
+   */
+  def removeEmpties(ids: Seq[Int]): Sequence = {
+    ids.sortBy(-_).foldLeft(this){
+      case (s, i) => s.removeEmpty(i)
+    }
+  }
+
+  def string: String = aminoacids.map(_.getClass.getSimpleName).mkString(", ")
 
 }

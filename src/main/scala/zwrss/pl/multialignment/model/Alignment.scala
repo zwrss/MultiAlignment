@@ -36,10 +36,12 @@ case class Alignment protected[model](sequences: Seq[Sequence], length: Int) {
    * Strips sequences from unnecessary empty spaces.
    */
   def stripEmpties: Alignment = {
-    val emptiesIds = (0 to length - 1).filter(i => sequences.forall(_.emptyAt(i))).reverse
-    val strippedSequences: Seq[Sequence] = emptiesIds.flatMap(i => sequences.map(_.removeEmpty(i)))
+    val emptiesIds = (0 to length - 1).filter(i => sequences.forall(_.emptyAt(i)))
+    val strippedSequences: Seq[Sequence] = sequences.map(_.removeEmpties(emptiesIds))
     Alignment(strippedSequences, length - emptiesIds.size)
   }
+
+  def string: String = sequences.map(_.string).mkString("\n")
 
 }
 

@@ -15,7 +15,7 @@ class BeeSwarm(sequences: Seq[Sequence], scoutsNo: Int, workersNo: Int, hardWork
    * Performs one iteration of the algorithm
    */
   def iterate: Unit = {
-    val (workers, scouts) = bees.sortBy(_.score).splitAt(workersNo)
+    val (workers, scouts) = bees.sortBy(-_.score).splitAt(workersNo)
     bees = workers.map(_.work) ++ scouts.map(_.scout)
   }
 
@@ -23,4 +23,12 @@ class BeeSwarm(sequences: Seq[Sequence], scoutsNo: Int, workersNo: Int, hardWork
    * Performs n iterations of the algorithm.
    */
   def iterate(n: Int): Unit = (1 to n).foreach(_ => iterate)
+
+  /**
+   * Returns the best solution
+   */
+  def solution: Alignment = {
+    bees = bees.sortBy(-_.score)
+    bees.head.solution.stripEmpties
+  }
 }
