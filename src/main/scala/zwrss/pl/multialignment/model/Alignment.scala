@@ -19,8 +19,9 @@ case class Alignment protected[model](sequences: Seq[Sequence], length: Int) {
   /**
    * Tries to find better alignment in neighbourhood using randomness. Returns self on no better alignments found.
    * Neighbourhood is defined as any alignment that differs with one added empty space (to every sequence).
+   * @param hardWorking How hard should it try to find better Alignment.
    */
-  def findBetterNeighbour: Alignment = {
+  def findBetterNeighbour(hardWorking: Int): Alignment = {
     def tryToFind(i: Int): Alignment =
       if(i == 0) this
       else {
@@ -28,7 +29,7 @@ case class Alignment protected[model](sequences: Seq[Sequence], length: Int) {
         if(a.score > this.score) a
         else tryToFind(i - 1)
       }
-    tryToFind(25)
+    tryToFind(hardWorking)
   }
 
   /**
@@ -60,6 +61,14 @@ object Alignment {
    */
   def random(sequences: Seq[Sequence]): Alignment = {
     val max = sequences.map(_.aminoacids.size).reduce(_ max _)
+    Alignment(sequences.map(_.complementRandomly(max)), max)
+  }
+
+  /**
+   * Creates alignment with Sequences complemented randomly with empty spaces.
+   */
+  def randomExtended(sequences: Seq[Sequence], extension: Int): Alignment = {
+    val max = sequences.map(_.aminoacids.size).reduce(_ max _) + extension
     Alignment(sequences.map(_.complementRandomly(max)), max)
   }
 
