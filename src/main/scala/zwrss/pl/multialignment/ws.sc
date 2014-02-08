@@ -1,3 +1,15 @@
-val x = Seq(1, 2, 3, 4, 5)
-x.take(2)
-x.drop(2)
+import zwrss.pl.multialignment.model._
+
+val s1 = Sequence(Seq(Asp, Empty, Leu, Thr))
+
+val s2 = Sequence(Seq(Asp, Empty, Leu, Thr))
+
+
+val a = Alignment.random(Seq(s1, s2)).stripEmpties
+
+a.score
+
+
+
+
+
