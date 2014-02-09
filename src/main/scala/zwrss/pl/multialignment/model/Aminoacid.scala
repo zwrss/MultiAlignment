@@ -4,7 +4,7 @@ package zwrss.pl.multialignment.model
  * Aminoacid.
  * Complete collection of compare methods from this trait's implementation represents Blosum62 matrix.
  */
-trait Aminoacid {
+abstract class Aminoacid(symbol: Char) {
 
   /**
    * Compares two Aminoacids using Blosum62.
@@ -21,9 +21,41 @@ trait Aminoacid {
    */
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int]
 
+  /**
+   * Returns one letter symbol of the Aminoacid.
+   */
+  def toChar: Char = symbol
+
 }
 
-case object Ala extends Aminoacid {
+object Aminoacid {
+  def fromChar(c: Char): Aminoacid = c match {
+    case 'a' => Ala
+    case 'c' => Cys
+    case 'd' => Asp
+    case 'e' => Glu
+    case 'f' => Phe
+    case 'g' => Gly
+    case 'h' => His
+    case 'i' => Ile
+    case 'k' => Lys
+    case 'l' => Leu
+    case 'm' => Met
+    case 'n' => Asn
+    case 'p' => Pro
+    case 'q' => Gln
+    case 'r' => Arg
+    case 's' => Ser
+    case 't' => Thr
+    case 'v' => Val
+    case 'w' => Trp
+    case 'y' => Tyr
+    case '.' => Empty
+    case _ => throw new IllegalArgumentException(c + " does not represent any aminoacid!")
+  }
+}
+
+case object Ala extends Aminoacid('a') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Ala) => 4
     case (Arg) => -1
@@ -46,9 +78,10 @@ case object Ala extends Aminoacid {
     case (Tyr) => -2
     case (Val) => 0
   }
+
 }
 
-case object Arg extends Aminoacid {
+case object Arg extends Aminoacid('r') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Arg) => 5
     case (Asn) => 0
@@ -72,7 +105,7 @@ case object Arg extends Aminoacid {
   }
 }
 
-case object Asn extends Aminoacid {
+case object Asn extends Aminoacid('n') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Asn) => 6
     case (Asp) => 1
@@ -95,7 +128,7 @@ case object Asn extends Aminoacid {
   }
 }
 
-case object Asp extends Aminoacid {
+case object Asp extends Aminoacid('d') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Asp) => 6
     case (Cys) => -3
@@ -117,7 +150,7 @@ case object Asp extends Aminoacid {
   }
 }
 
-case object Cys extends Aminoacid {
+case object Cys extends Aminoacid('c') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Cys) => 9
     case (Gln) => -3
@@ -138,7 +171,7 @@ case object Cys extends Aminoacid {
   }
 }
 
-case object Gln extends Aminoacid {
+case object Gln extends Aminoacid('q') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Gln) => 5
     case (Glu) => 2
@@ -158,7 +191,7 @@ case object Gln extends Aminoacid {
   }
 }
 
-case object Glu extends Aminoacid {
+case object Glu extends Aminoacid('e') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Glu) => 5
     case (Gly) => -2
@@ -177,7 +210,7 @@ case object Glu extends Aminoacid {
   }
 }
 
-case object Gly extends Aminoacid {
+case object Gly extends Aminoacid('g') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Gly) => 6
     case (His) => -2
@@ -195,7 +228,7 @@ case object Gly extends Aminoacid {
   }
 }
 
-case object His extends Aminoacid {
+case object His extends Aminoacid('h') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (His) => 8
     case (Ile) => -3
@@ -212,7 +245,7 @@ case object His extends Aminoacid {
   }
 }
 
-case object Ile extends Aminoacid {
+case object Ile extends Aminoacid('i') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Ile) => 4
     case (Leu) => 2
@@ -228,7 +261,7 @@ case object Ile extends Aminoacid {
   }
 }
 
-case object Leu extends Aminoacid {
+case object Leu extends Aminoacid('l') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Leu) => 4
     case (Lys) => -2
@@ -243,7 +276,7 @@ case object Leu extends Aminoacid {
   }
 }
 
-case object Lys extends Aminoacid {
+case object Lys extends Aminoacid('k') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Lys) => 5
     case (Met) => -1
@@ -257,7 +290,7 @@ case object Lys extends Aminoacid {
   }
 }
 
-case object Met extends Aminoacid {
+case object Met extends Aminoacid('m') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Met) => 5
     case (Phe) => 0
@@ -270,7 +303,7 @@ case object Met extends Aminoacid {
   }
 }
 
-case object Phe extends Aminoacid {
+case object Phe extends Aminoacid('f') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Phe) => 6
     case (Pro) => -4
@@ -282,7 +315,7 @@ case object Phe extends Aminoacid {
   }
 }
 
-case object Pro extends Aminoacid {
+case object Pro extends Aminoacid('p') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Pro) => 7
     case (Ser) => -1
@@ -293,7 +326,7 @@ case object Pro extends Aminoacid {
   }
 }
 
-case object Ser extends Aminoacid {
+case object Ser extends Aminoacid('s') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Ser) => 4
     case (Thr) => 1
@@ -303,7 +336,7 @@ case object Ser extends Aminoacid {
   }
 }
 
-case object Thr extends Aminoacid {
+case object Thr extends Aminoacid('t') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Thr) => 5
     case (Trp) => -2
@@ -312,7 +345,7 @@ case object Thr extends Aminoacid {
   }
 }
 
-case object Trp extends Aminoacid {
+case object Trp extends Aminoacid('w') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Trp) => 11
     case (Tyr) => 2
@@ -320,20 +353,20 @@ case object Trp extends Aminoacid {
   }
 }
 
-case object Tyr extends Aminoacid {
+case object Tyr extends Aminoacid('y') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Tyr) => 7
     case (Val) => -1
   }
 }
 
-case object Val extends Aminoacid {
+case object Val extends Aminoacid('v') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case (Val) => 4
   }
 }
 
-case object Empty extends Aminoacid {
+case object Empty extends Aminoacid('.') {
   protected[model] def internalCompare: PartialFunction[Aminoacid, Int] = {
     case a: Aminoacid => 0
   }

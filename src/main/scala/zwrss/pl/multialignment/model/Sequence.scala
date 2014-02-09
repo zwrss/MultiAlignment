@@ -6,7 +6,7 @@ import scala.util.Random
 /**
  * Sequence of aminoacids.
  */
-case class Sequence(aminoacids: Seq[Aminoacid]) {
+case class Sequence(name: String, aminoacids: Seq[Aminoacid]) {
 
   /**
    * Comapre with one sequence and return score.
@@ -37,7 +37,7 @@ case class Sequence(aminoacids: Seq[Aminoacid]) {
     val empties = (1 to (size - aminoacids.size)).foldLeft(Seq.empty[Aminoacid]) {
       case (seq, i) => seq :+ Empty
     }
-    Sequence(this.aminoacids ++ empties)
+    Sequence(name, this.aminoacids ++ empties)
   }
 
   /**
@@ -55,7 +55,7 @@ case class Sequence(aminoacids: Seq[Aminoacid]) {
         val compSeq = (head :+ Empty) ++ tail
         internalComplement(size, compSeq)
       }
-    Sequence(internalComplement(size, aminoacids))
+    Sequence(name, internalComplement(size, aminoacids))
   }
 
   /**
@@ -70,7 +70,7 @@ case class Sequence(aminoacids: Seq[Aminoacid]) {
   def removeEmpty(idx: Int): Sequence = {
     if(!emptyAt(idx)) throw new IllegalArgumentException("Not empty at idx = " + idx + "!")
     val (head, tail) = aminoacids.splitAt(idx)
-    Sequence(head ++ tail.tail)
+    Sequence(name, head ++ tail.tail)
   }
 
   /**
@@ -83,6 +83,10 @@ case class Sequence(aminoacids: Seq[Aminoacid]) {
     }
   }
 
-  def string: String = aminoacids.map(_.getClass.getSimpleName).mkString(", ")
+  def string: String = name + "      " + aminoacids.map(_.toChar).mkString("")
 
+}
+
+object Sequence {
+  def fromString(name: String, str: String): Sequence = Sequence(name, str.map(c => Aminoacid.fromChar(c)))
 }
