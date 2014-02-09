@@ -83,6 +83,13 @@ case class Sequence(name: String, aminoacids: Seq[Aminoacid]) {
     }
   }
 
+  /**
+   * Returns sequence without empty spaces.
+   */
+  def removedAllEmpties: Sequence = {
+    Sequence(name, aminoacids.filterNot(_.isInstanceOf[Empty.type]))
+  }
+
   def string: String = name + "      " + aminoacids.map(_.toChar).mkString("")
 
 }

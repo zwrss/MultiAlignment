@@ -14,7 +14,7 @@ case class MsfUtil(filename: String) { //TODO Smarter mechanism - with headers h
     var lns = Seq.empty[String]
     val scanner = new Scanner(new File(filename))
     while(scanner.hasNextLine) lns = lns :+ scanner.nextLine
-    scanner.close
+    scanner.close()
     lns
   }
 
@@ -42,6 +42,11 @@ case class MsfUtil(filename: String) { //TODO Smarter mechanism - with headers h
       case (name, seq) => Sequence.fromString(name, seq)
     }.toSeq
   }
+
+  /**
+   * Returns sequences without empty spaces.
+   */
+  def getStrippedSequences: Seq[Sequence] = getSequences.map(_.removedAllEmpties)
 
   /**
    * Saves provided sequences.

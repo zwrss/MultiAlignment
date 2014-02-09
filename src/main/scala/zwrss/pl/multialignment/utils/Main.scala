@@ -26,7 +26,7 @@ object Main {
 
     val msf = MsfUtil(filename)
 
-    val sequences = msf.getSequences
+    val sequences = msf.getStrippedSequences
 
     println("Input sequences from file " + filename + ": \n")
     println(sequences.map(_.string).mkString("\n"))
